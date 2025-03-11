@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Wachtwoordgenerator</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="form">
+      <h2></h2>
+
+      <div class="option">
+        <div id="result"></div>
+        <div id="entropy" style="margin-top: 10px; font-weight: bold">
+          Entropie:
+          <span
+            id="strengthEmoji"
+            style="font-size: 15px; display: none; margin-left: 10px"
+          ></span>
+        </div>
+      </div>
+
+      <div class="option">
+        <label>Wachtwoordlengte</label>
+        <input type="number" id="length" min="4" max="25" value="16" />
+      </div>
+
+      <div class="option">
+        <label>Kleine letters toestaan</label>
+        <input type="checkbox" id="lowercase" checked />
+      </div>
+
+      <div class="option">
+        <label>Hoofdletters toestaan</label>
+        <input type="checkbox" id="uppercase" checked />
+      </div>
+
+      <div class="option">
+        <label>Cijfers toestaan</label>
+        <input type="checkbox" id="numbers" checked />
+      </div>
+
+      <div class="option">
+        <label>Speciale tekens toestaan</label>
+        <input type="checkbox" id="symbols" checked />
+      </div>
+
+      <button id="generate" onclick="generate()">Genereer wachtwoord</button>
+    </div>
+
+    <script src="generator.js"></script>
+  </body>
+</html>

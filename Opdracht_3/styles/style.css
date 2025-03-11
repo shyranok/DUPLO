@@ -1,0 +1,76 @@
+body {
+  font-size: 18px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Volledige schermhoogte */
+  background-image: url("/images/password-generator.png");
+  background-size: cover; /* Zorgt ervoor dat de afbeelding het hele scherm vult */
+  background-position: center; /* Centreert de afbeelding */
+  background-repeat: no-repeat;
+  margin: 0;
+}
+
+form {
+  background: rgba(
+    255,
+    255,
+    255,
+    0.8
+  ); /* Licht transparante achtergrond voor leesbaarheid */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+#form {
+  position: relative;
+  top: 30px;
+}
+
+#form h2 {
+  text-align: center;
+}
+
+#result {
+  background-color: #0b1964;
+  text-align: center;
+  color: azure;
+  font-size: 130%;
+  letter-spacing: 1px;
+  height: 26px;
+  padding: 10px;
+}
+
+.option {
+  font-size: 90%;
+  margin-bottom: 5%;
+}
+
+.option input {
+  float: right;
+}
+
+#generate {
+  background-color: #0b1964;
+  color: #ffffff;
+  width: 100%;
+  height: 35px;
+  padding: 0;
+  border: none;
+  border-radius: 5px;
+}
+
+#entropy {
+  font-weight: bold;
+  display: inline-block; /* Zorgt ervoor dat de tekst en de emoji naast elkaar staan */
+}
+
+#strengthEmoji {
+  font-size: 50px;
+  margin-left: 10px; /* Ruimte tussen de tekst en emoji */
+  display: inline-block; /* Zorg ervoor dat de emoji inline verschijnt */
+  vertical-align: middle; /* Zorgt ervoor dat de emoji op dezelfde lijn zit als de tekst */
+}
