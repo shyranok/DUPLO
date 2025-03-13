@@ -4,11 +4,12 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Volledige schermhoogte */
+  min-height: 100vh;
   background-image: url("/images/password-generator.png");
-  background-size: cover; /* Zorgt ervoor dat de afbeelding het hele scherm vult */
-  background-position: center; /* Centreert de afbeelding */
+  background-size: cover; 
+  background-position: center; 
   background-repeat: no-repeat;
+  background-attachment: fixed;
   margin: 0;
 }
 
@@ -18,10 +19,12 @@ form {
     255,
     255,
     0.8
-  ); /* Licht transparante achtergrond voor leesbaarheid */
+  ); 
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  max-width: 90%;
+  width: 400px; 
   text-align: center;
 }
 
@@ -65,12 +68,12 @@ form {
 
 #entropy {
   font-weight: bold;
-  display: inline-block; /* Zorgt ervoor dat de tekst en de emoji naast elkaar staan */
+  display: inline-block; 
 }
 
 #strengthEmoji {
   font-size: 50px;
-  margin-left: 10px; /* Ruimte tussen de tekst en emoji */
-  display: inline-block; /* Zorg ervoor dat de emoji inline verschijnt */
-  vertical-align: middle; /* Zorgt ervoor dat de emoji op dezelfde lijn zit als de tekst */
+  margin-left: 10px; 
+  display: inline-block; 
+  vertical-align: middle; 
 }
