@@ -3,54 +3,142 @@ const apiUrl = "https://api.weatherapi.com/v1/forecast.json";
 
 const locationInput = document.getElementById("locationInput");
 const searchButton = document.getElementById("searchButton");
-const locationElement = document.getElementById("location");
-const temperatureElement = document.getElementById("temperature");
-const iconElement = document.getElementById("weatherIcon");
-const precipitationElement = document.getElementById("precipitation");
+const weatherContainer = document.getElementById("weatherContainer");
 const loadingSpinner = document.getElementById("loadingSpinner");
+const infoButton = document.getElementById("infoButton");
+
+let displayedLocations = [];
+
+let weatherData = {}; // Definieer het weatherData object hier
+
+window.addEventListener("load", () => {
+  const popover = new bootstrap.Popover(infoButton);
+  popover.show();
+});
 
 searchButton.addEventListener("click", () => {
-  const location = locationInput.value.trim();
-  if (location) {
-    fetchWeather(location);
+  const popover = bootstrap.Popover.getInstance(infoButton);
+  if (popover) {
+    popover.hide();
+  }
+
+  const locations = locationInput.value
+    .split(",")
+    .map((loc) => loc.trim())
+    .filter((loc) => loc);
+
+  if (locations.length > 0) {
+    weatherContainer.innerHTML = ""; 
+
+    const uniqueLocations = new Set(); 
+    let isDuplicate = false;
+
+    locations.forEach((location) => {
+      const normalizedLocation = location.toLowerCase(); 
+
+      if (uniqueLocations.has(normalizedLocation)) {
+        isDuplicate = true;
+      } else {
+        uniqueLocations.add(normalizedLocation); 
+      }
+    });
+
+    if (isDuplicate) {
+      alert("Je hebt dezelfde locatie meerdere keren ingevoerd!");
+      return; 
+    }
+
+    if (locations.length <= 3) {
+      locations.forEach((location) => {
+        const normalizedLocation = location.toLowerCase(); 
+
+        if (displayedLocations.includes(normalizedLocation)) {
+          displayWeatherFromCache(location); 
+        } else {
+          displayedLocations.push(normalizedLocation);
+          fetchWeather(location); 
+        }
+      });
+    } else {
+      alert("Je kunt maximaal 3 locaties invoeren.");
+    }
   } else {
-    alert("Vul een locatie in!");
+    alert("Vul minimaal één locatie in!");
   }
 });
 
 function fetchWeather(location) {
   const url = `${apiUrl}?key=${apiKey}&q=${location}&days=1&aqi=no&alerts=no`;
 
-  loadingSpinner.classList.remove("d-none"); // Spinner laten zien
+  loadingSpinner.classList.remove("d-none");
 
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
-      loadingSpinner.classList.add("d-none"); // Spinner verbergen
+      loadingSpinner.classList.add("d-none"); 
 
       if (data.error) {
         throw new Error(`API Fout: ${data.error.message}`);
       }
 
-      locationElement.textContent = data.location.name;
-      temperatureElement.textContent = `${Math.round(data.current.temp_c)}°C`;
-
-      iconElement.src = `https:${data.current.condition.icon}`;
-      iconElement.alt = data.current.condition.text;
-      iconElement.classList.remove("d-none");
-
-      const rainChance = data.forecast.forecastday[0].day.daily_chance_of_rain;
-      precipitationElement.textContent = `Neerslagkans: ${rainChance}%`;
+      weatherData[location.toLowerCase()] = data;
+      updateWeatherDisplay(data); 
     })
     .catch((error) => {
       console.error("Error fetching weather data:", error.message);
       alert("Er is een fout opgetreden: " + error.message);
-
-      locationElement.textContent = "Locatie niet gevonden";
-      temperatureElement.textContent = "";
-      precipitationElement.textContent = "";
-      iconElement.src = "";
-      iconElement.classList.add("d-none"); 
-      loadingSpinner.classList.add("d-none");
+      loadingSpinner.classList.add("d-none"); 
     });
+}
+
+function updateWeatherDisplay(data) {
+  const weatherCard = document.createElement("div");
+  weatherCard.classList.add(
+    "weather-card",
+    "p-3",
+    "bg-light",
+    "rounded",
+    "shadow-sm",
+    "mb-3"
+  );
+
+  weatherCard.innerHTML = `
+    <h2 class="fw-bold">${data.location.name}</h2>
+    <p class="fs-4">${Math.round(data.current.temp_c)}°C</p>
+    <img src="https:${data.current.condition.icon}" alt="${
+    data.current.condition.text
+  }" class="img-fluid" style="max-width: 100px" />
+    <p class="text-muted mt-2">Neerslagkans: ${
+      data.forecast.forecastday[0].day.daily_chance_of_rain
+    }%</p>
+  `;
+
+  weatherContainer.appendChild(weatherCard); 
+}
+
+function displayWeatherFromCache(location) {
+  const data = weatherData[location.toLowerCase()]; 
+
+  const weatherCard = document.createElement("div");
+  weatherCard.classList.add(
+    "weather-card",
+    "p-3",
+    "bg-light",
+    "rounded",
+    "shadow-sm",
+    "mb-3"
+  );
+
+  weatherCard.innerHTML = `
+    <h2 class="fw-bold">${data.location.name}</h2>
+    <p class="fs-4">${Math.round(data.current.temp_c)}°C</p>
+    <img src="https:${data.current.condition.icon}" alt="${
+    data.current.condition.text
+  }" class="img-fluid" style="max-width: 100px" />
+    <p class="text-muted mt-2">Neerslagkans: ${
+      data.forecast.forecastday[0].day.daily_chance_of_rain
+    }%</p>
+  `;
+
+  weatherContainer.appendChild(weatherCard); 
 }

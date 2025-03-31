@@ -4,7 +4,7 @@ body {
 }
 
 .container {
-  max-width: 400px;
+  max-width: 500px;
   margin: 0 auto;
   text-align: center;
   padding: 20px;
@@ -98,4 +98,13 @@ button {
 .spinner-border {
   display: none;
   margin-top: 20px;
+}
+
+#infoButton {
+  width: 160px;
+  height: 40px;
+  font-size: 18px;
+  padding: 5px;
+  font-size: 14px;
+  white-space: nowrap;
 }
